@@ -1,0 +1,104 @@
+I learned how to:
+Launch EC2 instances.
+Use tags for easy identification.
+Set up IAM policies accessing EC2 instances based on their environment (development or production).
+Create an IAM user and assign them to the appropriate user group with the necessary permissions for their role.
+Test IAM access for the User you've created.
+
+Based on this project, I prepared following questions
+
+
+## What is EC2?
+
+EC2 = Elastic Compute Cloud
+
+Amazon EC2 is a service that lets you rent and use virtual computers in the cloud. They're like your personal computers,but they exist on the internet instead of being physically in front of you. You can create, customize, and use these computers for all different reasons,from running applications to hosting websites. 
+
+Elastic = flexible. This service can easily adapt and change in size and power to fit your needs.
+Compute = computing power. EC2 provides virtual computers that can do various tasks, just like your personal computer.
+Cloud = available over the internet.
+
+## What are EC2 Instances?
+
+If EC2 is the service that provides virtual computers/servers, each instance is one of those computers/servers that gets produced.
+Just like you can choose a computer with more memory or a faster processor when you buy a laptop, with EC2 instances, you can pick a virtual computer that fits what you need for your projects.You can customize your EC2 instance's CPU, memory, storage, and networking capacity and more.
+
+note : Every EC2 instance must have a unique name within its AWS Region where it's located.
+
+## Why we need to create tags?
+
+Tags are labels to help AWS Account users identify and manage their resources.Also for grouping, mass management and applying security policies.
+Tags are like labels you can attach to AWS resources for organization.
+
+In this case, we're creating a tag called "Env" with a value of "production" or "development" to label the instances used in production vs development environments.
+
+This tagging helps us with identifying all resources with the same tag at once (they are useful filters when you're searching for something), cost allocation, and applying policies based on environment types.
+
+## What is AMI?
+
+AMI stands for Amazon Machine Image, and it's very similar to those pre-built computers. An AMI is a template or blueprint used to create EC2 instances and contains the operating system along with the applications needed to launch the instance.
+
+## What is Instance type?
+
+If AMIs give you pre-built software and operating systems, instance types cover the 'hardware' components.. CPU power, memory size, storage space and more!. So, while the AMI decides what operating system your server runs, the instance type determines how fast and powerful it performs.
+
+## What is Key Pair?
+
+A key pair is primarily used for accessing your EC2 instance securely without going through the AWS Management Console. Instead of the Management Console, you're using SSH (Secure Shell) Access with your key pairs - this is out of scope for this project, but you'll learn more about SSH and key pairs in a networking or compute-themed project.
+Proceeding without a key pair means you won't have SSH (Secure Shell) access to your instance, which is generally not recommended because it limits your ability to troubleshoot or manage your EC2 instance through a secure way outside of the Console. It's always safer and more flexible to have a key pair set up, so you would create a key pair for bigger projects that you work on over a longer period of time.
+
+## What do the development vs production environments mean?
+Development and production environments refer to different stages in the software development lifecycle.
+The development environment is where developers write, test, and debug code before it's deployed to production, which is the live environment that your end users can use.
+
+## What is IAM ?
+IAM stands for Identity and Access Management. You'll use AWS IAM to manage the access level that other users and services have to your resources.
+
+## what is a policy?
+An IAM policy is a rule for who can do what with your AWS resources. It's all about giving permissions to IAM users, groups, or roles, saying what they can or can't do on certain resources, and when those rules kick in.
+
+You can create and edit AWS policies in the visual editor or JSON.
+
+{    
+  "Version": "2012-10-17",    
+  "Statement": [        
+    {            
+      "Effect": "Allow",            
+      "Action": "ec2:*",            
+      "Resource": "*",            
+      "Condition": {                
+        "StringEquals": {                    
+          "ec2:ResourceTag/Env": "development"                
+        }            
+      }        
+    },        
+    {            
+      "Effect": "Allow",            
+      "Action": "ec2:Describe*",            
+      "Resource": "*"        
+    },        
+    {            
+      "Effect": "Deny",            
+      "Action": [                
+        "ec2:DeleteTags",                
+        "ec2:CreateTags"            
+      ],            
+      "Resource": "*"        
+    }    
+  ] 
+}
+
+
+## What is an Account Alias? Why are we creating one?
+
+Once you onboard new users into your AWS account, these new users get access through a unique log-in URL for your account.An Account Alias is a friendly name for your AWS account that you can use instead of your account ID (which is usually a bunch of digits) to sign in to the AWS Management Console.
+
+Your AWS account's sign-in page has this URL by default: https://Your_Account_ID.signin.aws.amazon.com/console/
+
+If you create an AWS account alias for your AWS account ID, your sign-in page URL looks more like: https://Your_Account_Alias.signin.aws.amazon.com/console/
+
+You would create an alias to make it easier to remember and share your AWS console's login URL with others e.g. NextWork's new intern. Companies often use this so that their AWS account sign-in page is more user-friendly for their users. 
+
+## What is an IAM User Group?
+
+An IAM user group is a collection/folder of IAM users. It allows you to manage permissions for all the users in your group at the same time by attaching policies to the group rather than individual users.
